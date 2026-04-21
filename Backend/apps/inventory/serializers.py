@@ -21,7 +21,13 @@ class MedicineSerializer(serializers.ModelSerializer):
 
 
 class StockMovementSerializer(serializers.ModelSerializer):
+    medicine_name = serializers.CharField(source='medicine.name', read_only=True)
+    performed_by_name = serializers.CharField(source='performed_by.username', read_only=True)
+
     class Meta:
         model = StockMovement
-        fields = ['id', 'medicine', 'movement_type', 'quantity', 'notes', 'performed_by', 'date']
+        fields = [
+            'id', 'medicine', 'medicine_name', 'movement_type',
+            'quantity', 'notes', 'performed_by', 'performed_by_name', 'date'
+        ]
         read_only_fields = ['date']

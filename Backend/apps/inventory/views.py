@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from django.db.models import F
 from django.utils import timezone
 from datetime import timedelta
-from .models import Medicine
-from .serializers import MedicineSerializer
+from .models import Medicine, StockMovement
+from .serializers import MedicineSerializer, StockMovementSerializer
 
 
 class MedicineViewSet(viewsets.ModelViewSet):
@@ -48,3 +48,32 @@ class MedicineViewSet(viewsets.ModelViewSet):
         qs = self.get_queryset().filter(expiry_date__lte=today)
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
+
+
+class StockMovementViewSet(viewsets.ModelViewSet):
+    serializer_class = StockMovementSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post']
+
+    def get_queryset(self):
+        qs = StockMovement.objects.filter(pharmacy=self.request.user.pharmacy)
+        medicine_id = self.request.query_params.get('medicine')
+        if medicine_id:
+            qs = qs.filter(medicine_id=medicine_id)
+        return qs.order_by('-date')
+
+    def perform_create(self, serializer):
+        medicine = serializer.validated_data['medicine']
+        movement_type = serializer.validated_data['movement_type']
+        quantity = serializer.validated_data['quantity']
+
+        if movement_type in ['IN', 'ADJUSTMENT']:
+            medicine.quantity += quantity
+        elif movement_type in ['OUT', 'EXPIRED']:
+            medicine.quantity -= quantity
+
+        medicine.save()
+        serializer.save(
+            pharmacy=self.request.user.pharmacy,
+            performed_by=self.request.user
+        )
