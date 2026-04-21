@@ -1,3 +1,6 @@
 from django.urls import path
+from .views import SummaryView
 
-urlpatterns = []
+urlpatterns = [
+    path('dashboard/summary/', SummaryView.as_view(), name='dashboard-summary'),
+]
