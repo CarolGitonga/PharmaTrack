@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+$pharmatrack-primary: mat.$blue-palette;
+$pharmatrack-accent: mat.$cyan-palette;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: $pharmatrack-primary,
+      tertiary: $pharmatrack-accent,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f5f5f5; }
+
+// Status badge colours used across the app
+.badge-ok        { background-color: #2E7D32; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+.badge-low-stock { background-color: #E65100; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+.badge-expiring  { background-color: #F9A825; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+.badge-expired   { background-color: #C62828; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+
+// Dashboard card accent colours
+.card-blue   { border-left: 5px solid #1565C0; }
+.card-orange { border-left: 5px solid #E65100; }
+.card-yellow { border-left: 5px solid #F9A825; }
+.card-red    { border-left: 5px solid #C62828; }
