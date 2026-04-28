@@ -1,0 +1,121 @@
+.dashboard-container {
+  padding: 24px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #1565C0;
+  }
+
+  .pharmacy-name {
+    margin: 4px 0 0;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 64px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.summary-card {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+
+  mat-card-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px !important;
+  }
+
+  .card-icon {
+    mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      opacity: 0.8;
+    }
+  }
+
+  .card-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .card-label {
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
+  }
+}
+
+.clickable {
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+  }
+}
+
+.card-blue  { border-left: 5px solid #1565C0; .card-icon mat-icon { color: #1565C0; } .card-value { color: #1565C0; } }
+.card-orange { border-left: 5px solid #E65100; .card-icon mat-icon { color: #E65100; } .card-value { color: #E65100; } }
+.card-yellow { border-left: 5px solid #F9A825; .card-icon mat-icon { color: #F9A825; } .card-value { color: #F9A825; } }
+.card-red   { border-left: 5px solid #C62828; .card-icon mat-icon { color: #C62828; } .card-value { color: #C62828; } }
+
+.stock-value {
+  text-align: right;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #555;
+
+  strong {
+    color: #1565C0;
+    font-size: 16px;
+  }
+}
+
+.chart-card {
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+
+  mat-card-title {
+    font-size: 16px;
+    color: #444;
+  }
+
+  canvas {
+    max-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
