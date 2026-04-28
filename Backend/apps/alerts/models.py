@@ -9,9 +9,10 @@ class AlertLog(models.Model):
         ('EXPIRING_60', 'Expiring in 60 days'),
         ('EXPIRING_30', 'Expiring in 30 days'),
         ('EXPIRED', 'Expired'),
+        ('TEST', 'Test SMS'),
     ]
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE)
-    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE, null=True, blank=True)
     alert_type = models.CharField(max_length=20, choices=ALERT_TYPES)
     message = models.TextField()
     sent_to = models.CharField(max_length=20)
@@ -19,4 +20,5 @@ class AlertLog(models.Model):
     was_successful = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.alert_type} — {self.medicine.name} ({self.sent_at.date()})"
+        medicine_name = self.medicine.name if self.medicine else 'Test'
+        return f"{self.alert_type} — {medicine_name} ({self.sent_at.date()})"

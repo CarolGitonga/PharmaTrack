@@ -3,7 +3,10 @@ from .models import AlertLog
 
 
 class AlertLogSerializer(serializers.ModelSerializer):
-    medicine_name = serializers.CharField(source='medicine.name', read_only=True)
+    medicine_name = serializers.SerializerMethodField()
+
+    def get_medicine_name(self, obj):
+        return obj.medicine.name if obj.medicine else 'Test SMS'
 
     class Meta:
         model = AlertLog

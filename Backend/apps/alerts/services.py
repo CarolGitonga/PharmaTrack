@@ -57,11 +57,26 @@ class SMSAlertService:
             f"Hello {pharmacy.owner_name}, your SMS alerts are working correctly.\n"
             f"Pharmacy: {pharmacy.name}"
         )
+        success = True
+        error = None
         try:
-            response = self.sms.send(message, [pharmacy.phone])
-            return {'success': True, 'response': response}
+            self.sms.send(message, [pharmacy.phone])
         except Exception as e:
-            return {'success': False, 'error': str(e)}
+            success = False
+            error = str(e)
+
+        AlertLog.objects.create(
+            pharmacy=pharmacy,
+            medicine=None,
+            alert_type='TEST',
+            message=message,
+            sent_to=pharmacy.phone,
+            was_successful=success,
+        )
+
+        if success:
+            return {'success': True}
+        return {'success': False, 'error': error}
 
     def _send(self, pharmacy, medicine, alert_type, message):
         success = True
