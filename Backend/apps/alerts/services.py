@@ -1,6 +1,19 @@
 import africastalking
+import requests
+import urllib3
 from django.conf import settings
 from .models import AlertLog
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# Monkey-patch requests globally so africastalking SDK skips SSL verification
+_original_request = requests.Session.request
+
+def _no_verify_request(self, method, url, **kwargs):
+    kwargs['verify'] = False
+    return _original_request(self, method, url, **kwargs)
+
+requests.Session.request = _no_verify_request
 
 
 class SMSAlertService:
