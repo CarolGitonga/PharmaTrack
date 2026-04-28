@@ -1,5 +1,8 @@
 <div style="padding: 32px;">
   <h2>Welcome, {{ user?.first_name || user?.username }}</h2>
   <p>{{ user?.pharmacy?.name }}</p>
-  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  <div style="margin-top: 16px; display: flex; gap: 12px;">
+    <button mat-raised-button color="primary" routerLink="/medicines">Medicines</button>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  </div>
 </div>
