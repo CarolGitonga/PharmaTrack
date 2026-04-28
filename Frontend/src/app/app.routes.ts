@@ -27,5 +27,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/medicines/medicine-form/medicine-form.component').then(m => m.MedicineFormComponent),
   },
+  {
+    path: 'alerts',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/alerts/alert-settings/alert-settings.component').then(m => m.AlertSettingsComponent),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
