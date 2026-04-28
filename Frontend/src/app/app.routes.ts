@@ -17,5 +17,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/medicines/medicine-list/medicine-list.component').then(m => m.MedicineListComponent),
   },
+  {
+    path: 'medicines/add',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/medicines/medicine-form/medicine-form.component').then(m => m.MedicineFormComponent),
+  },
+  {
+    path: 'medicines/edit/:id',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/medicines/medicine-form/medicine-form.component').then(m => m.MedicineFormComponent),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
