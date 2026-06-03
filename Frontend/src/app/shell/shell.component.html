@@ -1,0 +1,65 @@
+<div class="shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">
+        <mat-icon>local_pharmacy</mat-icon>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">PharmaTrack</span>
+        <span class="logo-sub">Pharmacy System</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <span class="nav-label">MAIN</span>
+
+      <a routerLink="/dashboard" routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </a>
+
+      <a routerLink="/medicines" routerLinkActive="active" class="nav-item">
+        <mat-icon>medication</mat-icon>
+        <span>Inventory</span>
+      </a>
+
+      <a routerLink="/alerts" routerLinkActive="active" class="nav-item">
+        <mat-icon>notifications</mat-icon>
+        <span>Alerts</span>
+      </a>
+    </nav>
+
+    <!-- Logout -->
+    <div class="sidebar-bottom">
+      <button class="logout-item" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Right panel -->
+  <div class="right-panel">
+
+    <!-- Top bar -->
+    <header class="top-bar">
+      <div class="top-bar-profile">
+        <div class="profile-info">
+          <span class="profile-name">{{ user?.first_name || user?.username }}</span>
+          <span class="profile-sub">{{ user?.pharmacy?.name }}</span>
+        </div>
+        <div class="profile-avatar">{{ initials }}</div>
+      </div>
+    </header>
+
+    <!-- Page content -->
+    <main class="main-content">
+      <router-outlet />
+    </main>
+
+  </div>
+
+</div>

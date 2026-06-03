@@ -1,17 +1,40 @@
 <div class="page-container">
   <div class="page-header">
-    <h2>Medicines</h2>
-    <button mat-raised-button color="primary" routerLink="/medicines/add">
+    <div>
+      <h1 class="page-title">Inventory</h1>
+      <p class="page-subtitle">
+        All medicines &nbsp;·&nbsp;
+        <span *ngIf="!loading">{{ counts.all }} items</span>
+        <span *ngIf="lastLoaded"> &nbsp;·&nbsp; Last updated {{ lastLoaded | date:'HH:mm' }}</span>
+      </p>
+    </div>
+    <button class="add-btn" routerLink="/medicines/add">
       <mat-icon>add</mat-icon> Add Medicine
     </button>
   </div>
 
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="selectTab('all')">
+      All <span class="tab-count">{{ counts.all }}</span>
+    </button>
+    <button class="tab-btn tab-low-stock" [class.active]="activeTab === 'low-stock'" (click)="selectTab('low-stock')">
+      Low Stock <span class="tab-count">{{ counts.lowStock }}</span>
+    </button>
+    <button class="tab-btn tab-expiring" [class.active]="activeTab === 'expiring'" (click)="selectTab('expiring')">
+      Expiring <span class="tab-count">{{ counts.expiring }}</span>
+    </button>
+    <button class="tab-btn tab-expired" [class.active]="activeTab === 'expired'" (click)="selectTab('expired')">
+      Expired <span class="tab-count">{{ counts.expired }}</span>
+    </button>
+  </div>
+
   <div class="search-bar">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search by name or category</mat-label>
-      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="applyFilter()" />
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+    <mat-icon>search</mat-icon>
+    <input type="text" placeholder="Search by name or category..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilter()" />
+    <button class="clear-btn" *ngIf="searchQuery" (click)="searchQuery=''; applyFilter()">
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 
   <div class="spinner-container" *ngIf="loading">
@@ -23,55 +46,59 @@
 
       <!-- Name -->
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Medicine Name</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>PRODUCT NAME</th>
         <td mat-cell *matCellDef="let m">
-          <div class="medicine-name">{{ m.name }}</div>
-          <div class="medicine-generic">{{ m.generic_name }}</div>
+          <div class="med-name">{{ m.name }} <span class="med-dosage" *ngIf="m.dosage">{{ m.dosage }}</span></div>
+          <div class="med-generic">{{ m.generic_name }}</div>
+          <div class="med-batch">{{ m.batch_number }}</div>
         </td>
       </ng-container>
 
       <!-- Category -->
       <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-        <td mat-cell *matCellDef="let m">{{ m.category }}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CATEGORY</th>
+        <td mat-cell *matCellDef="let m">
+          <span class="category-chip">{{ m.category }}</span>
+        </td>
       </ng-container>
 
       <!-- Quantity -->
       <ng-container matColumnDef="quantity">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>QUANTITY</th>
         <td mat-cell *matCellDef="let m">
-          {{ m.quantity }} {{ m.unit }}
-          <span class="min-qty">(min: {{ m.minimum_quantity }})</span>
+          <div class="stock-qty" [class.stock-low]="m.is_low_stock">{{ m.quantity }} <span class="stock-unit">{{ m.unit }}</span></div>
+          <div class="stock-min">min: {{ m.minimum_quantity }}</div>
         </td>
       </ng-container>
 
       <!-- Expiry -->
       <ng-container matColumnDef="expiry_date">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Expiry Date</th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>EXPIRY DATE</th>
         <td mat-cell *matCellDef="let m">
-          {{ m.expiry_date | date:'dd MMM yyyy' }}
-          <span class="days-left" *ngIf="!m.is_expired">({{ m.days_to_expiry }}d)</span>
+          <div class="expiry-date">{{ m.expiry_date | date:'dd MMM yyyy' }}</div>
+          <span *ngIf="m.is_expired" class="days-pill days-expired">Expired</span>
+          <span *ngIf="!m.is_expired && m.days_to_expiry <= 30" class="days-pill days-danger">{{ m.days_to_expiry }}d left</span>
+          <span *ngIf="!m.is_expired && m.days_to_expiry > 30 && m.days_to_expiry <= 60" class="days-pill days-warn">{{ m.days_to_expiry }}d left</span>
+          <span *ngIf="!m.is_expired && m.days_to_expiry > 60" class="days-pill days-ok">{{ m.days_to_expiry }}d left</span>
         </td>
       </ng-container>
 
       <!-- Status -->
       <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <th mat-header-cell *matHeaderCellDef>STATUS</th>
         <td mat-cell *matCellDef="let m">
-          <span [class]="'badge badge-' + getStatus(m)">{{ getStatusLabel(m) }}</span>
+          <span [class]="'status-badge status-' + getStatus(m)">{{ getStatusLabel(m) }}</span>
         </td>
       </ng-container>
 
       <!-- Actions -->
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let m">
-          <button mat-icon-button color="primary" [routerLink]="['/medicines/edit', m.id]" matTooltip="Edit">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="delete(m)" matTooltip="Deactivate">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <div class="action-btns">
+            <button class="action-btn edit-btn" [routerLink]="['/medicines/edit', m.id]">Edit</button>
+            <button class="action-btn delete-btn" (click)="delete(m)">Delete</button>
+          </div>
         </td>
       </ng-container>
 
@@ -79,7 +106,18 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell no-data" colspan="6">No medicines found.</td>
+        <td class="mat-cell" colspan="6">
+          <div class="empty-state">
+            <mat-icon>medication</mat-icon>
+            <p class="empty-title">No medicines found</p>
+            <span class="empty-sub" *ngIf="searchQuery">No results for "{{ searchQuery }}" — try a different search</span>
+            <span class="empty-sub" *ngIf="!searchQuery && activeTab !== 'all'">No medicines in this category</span>
+            <span class="empty-sub" *ngIf="!searchQuery && activeTab === 'all'">Your inventory is empty — add your first medicine</span>
+            <button class="add-btn" routerLink="/medicines/add" *ngIf="!searchQuery && activeTab === 'all'" style="margin-top:12px">
+              <mat-icon>add</mat-icon> Add Medicine
+            </button>
+          </div>
+        </td>
       </tr>
     </table>
   </div>

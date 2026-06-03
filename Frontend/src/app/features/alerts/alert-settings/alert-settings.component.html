@@ -1,8 +1,13 @@
 <div class="page-container">
   <div class="page-header">
-    <h2>Alert Settings</h2>
-    <button mat-stroked-button routerLink="/dashboard">
-      <mat-icon>arrow_back</mat-icon> Dashboard
+    <div>
+      <h1 class="page-title">Alerts</h1>
+      <p class="page-subtitle">SMS notifications · {{ user?.pharmacy?.name }}</p>
+    </div>
+    <button class="test-sms-btn" (click)="sendTestSms()" [disabled]="sendingTest">
+      <mat-spinner diameter="16" *ngIf="sendingTest"></mat-spinner>
+      <mat-icon *ngIf="!sendingTest">sms</mat-icon>
+      <span>{{ sendingTest ? 'Sending...' : 'Send Test SMS' }}</span>
     </button>
   </div>
 
@@ -31,13 +36,6 @@
         </div>
       </div>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="sendTestSms()" [disabled]="sendingTest">
-        <mat-spinner diameter="18" *ngIf="sendingTest"></mat-spinner>
-        <mat-icon *ngIf="!sendingTest">sms</mat-icon>
-        <span>{{ sendingTest ? 'Sending...' : 'Send Test SMS' }}</span>
-      </button>
-    </mat-card-actions>
   </mat-card>
 
   <!-- Alert Logs -->

@@ -1,44 +1,145 @@
 .page-container {
-  padding: 24px;
-  max-width: 900px;
+  padding: 32px;
+  max-width: 860px;
 }
 
+/* ─── Page Header ──────────────────────────────────────────── */
 .page-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-
-  h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    color: #1565C0;
-  }
+  gap: 16px;
+  margin-bottom: 32px;
 }
 
+.back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.15s;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &:hover { border-color: #071b36; color: #071b36; }
+}
+
+.page-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ─── Spinner ──────────────────────────────────────────────── */
 .spinner-container {
   display: flex;
   justify-content: center;
-  padding: 48px;
+  padding: 80px;
 }
 
-mat-card {
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+/* ─── Form Sections ────────────────────────────────────────── */
+.form-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.section-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #eef2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon { color: #4338ca; font-size: 20px; width: 20px; height: 20px; }
+}
+
+.section-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.section-sub {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px 16px;
+  gap: 8px 20px;
 }
 
+/* ─── Actions ──────────────────────────────────────────────── */
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #eee;
+  padding-top: 4px;
+}
+
+.cancel-btn {
+  padding: 0 24px;
+  height: 42px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+
+  &:hover { border-color: #94a3b8; color: #374151; }
+}
+
+.save-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 28px;
+  height: 42px;
+  border-radius: 8px;
+  border: none;
+  background: #071b36;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: #0d2a4a; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }

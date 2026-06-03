@@ -1,38 +1,61 @@
 <div class="login-wrapper">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <div class="login-header">
-        <h1>PharmaTrack</h1>
-        <p>Pharmacy Inventory Management</p>
-      </div>
-    </mat-card-header>
 
-    <mat-card-content>
+  <!-- Left branding panel -->
+  <div class="left-panel">
+    <div class="brand">
+      <div class="brand-icon"><mat-icon>local_pharmacy</mat-icon></div>
+      <h1>PharmaTrack</h1>
+      <p>Smart inventory management for modern pharmacies</p>
+    </div>
+    <ul class="features">
+      <li><mat-icon>check_circle</mat-icon> Real-time stock monitoring</li>
+      <li><mat-icon>check_circle</mat-icon> Automated expiry alerts</li>
+      <li><mat-icon>check_circle</mat-icon> SMS notifications via Africa's Talking</li>
+      <li><mat-icon>check_circle</mat-icon> Multi-tenant pharmacy support</li>
+    </ul>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="right-panel">
+    <div class="form-box">
+      <h2>Welcome back</h2>
+      <p class="form-sub">Sign in to your pharmacy account</p>
+
       <form [formGroup]="form" (ngSubmit)="submit()">
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username" autocomplete="username" />
-          <mat-error *ngIf="form.get('username')?.hasError('required')">Username is required</mat-error>
-        </mat-form-field>
+        <div class="field-group">
+          <label>Username</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="username" autocomplete="username" />
+            <mat-error *ngIf="form.get('username')?.hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="current-password" />
-          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="form.get('password')?.hasError('required')">Password is required</mat-error>
-        </mat-form-field>
+        <div class="field-group">
+          <label>Password</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput formControlName="password"
+              [type]="hidePassword ? 'password' : 'text'"
+              autocomplete="current-password" />
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="form.get('password')?.hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
 
-        <div class="error-message" *ngIf="error">{{ error }}</div>
+        <div class="error-alert" *ngIf="error">
+          <mat-icon>error_outline</mat-icon>
+          {{ error }}
+        </div>
 
-        <button mat-raised-button color="primary" type="submit" class="full-width login-btn" [disabled]="loading">
+        <button class="login-btn" type="submit" [disabled]="loading || form.invalid">
           <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-          <span *ngIf="!loading">Login</span>
+          <span *ngIf="!loading">Sign In</span>
         </button>
 
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
+
 </div>

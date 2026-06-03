@@ -1,121 +1,231 @@
 .dashboard-container {
-  padding: 24px;
+  padding: 32px;
+  max-width: 1200px;
 }
 
-.dashboard-header {
+/* ─── Page Header ──────────────────────────────────────────── */
+.page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-
-  h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    color: #1565C0;
-  }
-
-  .pharmacy-name {
-    margin: 4px 0 0;
-    color: #666;
-    font-size: 14px;
-  }
+  align-items: flex-start;
+  margin-bottom: 28px;
 }
 
-.header-actions {
-  display: flex;
-  gap: 12px;
+.page-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
 }
 
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.new-entry-btn {
+  background: #0f172a !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 0 20px !important;
+  height: 40px;
+}
+
+/* ─── Spinner ──────────────────────────────────────────────── */
 .spinner-container {
   display: flex;
   justify-content: center;
-  padding: 64px;
+  padding: 80px;
 }
 
+/* ─── Summary Cards ────────────────────────────────────────── */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
-.summary-card {
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-
-  mat-card-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 20px !important;
-  }
-
-  .card-icon {
-    mat-icon {
-      font-size: 36px;
-      width: 36px;
-      height: 36px;
-      opacity: 0.8;
-    }
-  }
-
-  .card-value {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1;
-  }
-
-  .card-label {
-    font-size: 13px;
-    color: #666;
-    margin-top: 4px;
-  }
-}
-
-.clickable {
-  cursor: pointer;
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+  border-top: 4px solid transparent;
   transition: transform 0.15s, box-shadow 0.15s;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12) !important;
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
-.card-blue  { border-left: 5px solid #1565C0; .card-icon mat-icon { color: #1565C0; } .card-value { color: #1565C0; } }
-.card-orange { border-left: 5px solid #E65100; .card-icon mat-icon { color: #E65100; } .card-value { color: #E65100; } }
-.card-yellow { border-left: 5px solid #F9A825; .card-icon mat-icon { color: #F9A825; } .card-value { color: #F9A825; } }
-.card-red   { border-left: 5px solid #C62828; .card-icon mat-icon { color: #C62828; } .card-value { color: #C62828; } }
+.border-blue   { border-top-color: #2563eb; }
+.border-orange { border-top-color: #f97316; }
+.border-yellow { border-top-color: #eab308; }
+.border-red    { border-top-color: #ef4444; }
+.border-teal   { border-top-color: #0891b2; }
 
-.stock-value {
-  text-align: right;
-  margin-bottom: 24px;
-  font-size: 14px;
-  color: #555;
+.card-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
 
-  strong {
-    color: #1565C0;
-    font-size: 16px;
+.card-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
   }
 }
 
-.chart-card {
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+.icon-blue   { background: #eff6ff; mat-icon { color: #2563eb; } }
+.icon-orange { background: #fff7ed; mat-icon { color: #f97316; } }
+.icon-yellow { background: #fefce8; mat-icon { color: #eab308; } }
+.icon-red    { background: #fef2f2; mat-icon { color: #ef4444; } }
+.icon-teal   { background: #ecfeff; mat-icon { color: #0891b2; } }
 
-  mat-card-title {
-    font-size: 16px;
-    color: #444;
-  }
+.card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
 
-  canvas {
-    max-height: 300px;
+.card-value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.color-blue   { color: #2563eb; }
+.color-orange { color: #f97316; }
+.color-yellow { color: #eab308; }
+.color-red    { color: #ef4444; }
+.color-teal   { color: #0891b2; }
+
+.card-sub {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* ─── Health Overview ──────────────────────────────────────── */
+.health-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.health-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.health-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.health-sub {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.health-bar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: #f1f5f9;
+}
+
+.bar-seg {
+  height: 100%;
+  transition: width 0.4s ease;
+  min-width: 2px;
+}
+
+.seg-healthy  { background: #2563eb; }
+.seg-low      { background: #f97316; }
+.seg-expiring { background: #fde047; }
+.seg-expired  { background: #ef4444; }
+
+.health-stats {
+  display: flex;
+  gap: 32px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-healthy  { background: #2563eb; }
+.dot-low      { background: #f97316; }
+.dot-expiring { background: #fde047; border: 1px solid #eab308; }
+.dot-expired  { background: #ef4444; }
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.stat-count {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+
+  &.color-orange { color: #f97316; }
+  &.color-yellow { color: #eab308; }
+  &.color-red    { color: #ef4444; }
+}
+
+/* ─── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .health-stats {
+    flex-wrap: wrap;
+    gap: 16px;
   }
 }

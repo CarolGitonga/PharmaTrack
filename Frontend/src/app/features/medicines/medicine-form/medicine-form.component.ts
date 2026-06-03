@@ -52,6 +52,7 @@ export class MedicineFormComponent implements OnInit {
 
   form = this.fb.group({
     name: ['', Validators.required],
+    dosage: [''],
     generic_name: [''],
     category: ['', Validators.required],
     manufacturer: [''],

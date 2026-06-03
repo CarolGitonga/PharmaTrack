@@ -15,8 +15,8 @@ html {
   ));
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #f5f5f5; }
+html, body { height: 100%; margin: 0; }
+body { font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #eef2ff; }
 
 // Status badge colours used across the app
 .badge-ok        { background-color: #2E7D32; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 12px; }

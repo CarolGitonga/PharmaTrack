@@ -1,20 +1,47 @@
 .page-container {
-  padding: 24px;
+  padding: 32px;
   max-width: 900px;
 }
 
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
 
-  h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    color: #1565C0;
-  }
+.page-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.page-subtitle {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.test-sms-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #071b36;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover:not(:disabled) { background: #0d2a4a; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
 .info-card {

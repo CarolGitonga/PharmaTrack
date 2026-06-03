@@ -6,6 +6,7 @@ from apps.accounts.models import Pharmacy, CustomUser
 class Medicine(models.Model):
     pharmacy = models.ForeignKey(Pharmacy, on_delete=models.CASCADE, related_name='medicines')
     name = models.CharField(max_length=200)
+    dosage = models.CharField(max_length=50, blank=True)
     generic_name = models.CharField(max_length=200, blank=True)
     category = models.CharField(max_length=100)
     manufacturer = models.CharField(max_length=200, blank=True)

@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 export interface Medicine {
   id: number;
   name: string;
+  dosage: string;
   generic_name: string;
   category: string;
   manufacturer: string;

@@ -12,7 +12,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MedicineService, Medicine } from '../../../core/services/medicine.service';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+
+type Tab = 'all' | 'low-stock' | 'expiring' | 'expired';
 
 @Component({
   selector: 'app-medicine-list',
@@ -31,13 +35,16 @@ import { MedicineService, Medicine } from '../../../core/services/medicine.servi
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatDialogModule,
+    ConfirmDialogComponent,
   ],
   templateUrl: './medicine-list.component.html',
-  styleUrl: './medicine-list.component.scss'
+  styleUrl: './medicine-list.component.scss',
 })
 export class MedicineListComponent implements OnInit {
   private medicineService = inject(MedicineService);
   private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -45,6 +52,19 @@ export class MedicineListComponent implements OnInit {
   dataSource = new MatTableDataSource<Medicine>();
   loading = true;
   searchQuery = '';
+  lastLoaded: Date | null = null;
+  activeTab: Tab = 'all';
+
+  private allMedicines: Medicine[] = [];
+
+  get counts() {
+    return {
+      all:       this.allMedicines.length,
+      lowStock:  this.allMedicines.filter(m => m.is_low_stock).length,
+      expiring:  this.allMedicines.filter(m => m.is_expiring_soon).length,
+      expired:   this.allMedicines.filter(m => m.is_expired).length,
+    };
+  }
 
   ngOnInit(): void {
     this.loadMedicines();
@@ -58,19 +78,36 @@ export class MedicineListComponent implements OnInit {
     this.loading = true;
     this.medicineService.getAll().subscribe({
       next: (data) => {
-        this.dataSource.data = data;
+        this.allMedicines = data;
+        this.lastLoaded = new Date();
         this.dataSource.filterPredicate = (medicine, filter) => {
           const search = filter.toLowerCase();
           return medicine.name.toLowerCase().includes(search) ||
                  medicine.category.toLowerCase().includes(search);
         };
+        this.applyTab(this.activeTab);
         this.loading = false;
       },
       error: () => {
         this.snackBar.open('Failed to load medicines.', 'Close', { duration: 3000 });
         this.loading = false;
-      }
+      },
     });
+  }
+
+  selectTab(tab: Tab): void {
+    this.activeTab = tab;
+    this.searchQuery = '';
+    this.applyTab(tab);
+  }
+
+  private applyTab(tab: Tab): void {
+    switch (tab) {
+      case 'low-stock': this.dataSource.data = this.allMedicines.filter(m => m.is_low_stock);   break;
+      case 'expiring':  this.dataSource.data = this.allMedicines.filter(m => m.is_expiring_soon); break;
+      case 'expired':   this.dataSource.data = this.allMedicines.filter(m => m.is_expired);      break;
+      default:          this.dataSource.data = this.allMedicines;
+    }
   }
 
   applyFilter(): void {
@@ -79,26 +116,37 @@ export class MedicineListComponent implements OnInit {
 
   getStatus(medicine: Medicine): string {
     if (medicine.is_expired) return 'expired';
-    if (medicine.is_expiring_soon) return 'expiring';
+    if (medicine.quantity === 0) return 'out-of-stock';
     if (medicine.is_low_stock) return 'low-stock';
-    return 'ok';
+    return 'in-stock';
   }
 
   getStatusLabel(medicine: Medicine): string {
     if (medicine.is_expired) return 'Expired';
-    if (medicine.is_expiring_soon) return 'Expiring Soon';
+    if (medicine.quantity === 0) return 'Out of Stock';
     if (medicine.is_low_stock) return 'Low Stock';
-    return 'OK';
+    return 'In Stock';
   }
 
   delete(medicine: Medicine): void {
-    if (!confirm(`Deactivate ${medicine.name}?`)) return;
-    this.medicineService.delete(medicine.id).subscribe({
-      next: () => {
-        this.snackBar.open(`${medicine.name} deactivated.`, 'Close', { duration: 3000 });
-        this.loadMedicines();
+    const ref = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Deactivate Medicine',
+        message: `Are you sure you want to deactivate ${medicine.name}? It will be removed from your active inventory.`,
+        confirmText: 'Deactivate',
       },
-      error: () => this.snackBar.open('Failed to deactivate.', 'Close', { duration: 3000 })
+    });
+
+    ref.afterClosed().subscribe(confirmed => {
+      if (!confirmed) return;
+      this.medicineService.delete(medicine.id).subscribe({
+        next: () => {
+          this.snackBar.open(`${medicine.name} deactivated.`, 'Close', { duration: 3000 });
+          this.loadMedicines();
+        },
+        error: () => this.snackBar.open('Failed to deactivate.', 'Close', { duration: 3000 }),
+      });
     });
   }
 }
